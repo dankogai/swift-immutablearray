@@ -28,3 +28,37 @@ assert(ia.map{ $0 * $0 } == [0,1,4,9])
 assert(ia.filter{ $0 % 2 == 0 } == [0,2])
 assert(ia.reduce(0){ $0 + $1 } == 6)
 assert(ia.reverse() == [3,2,1,0])
+
+import Darwin
+func timeit(f:()->()) -> Double { // by ms
+    let started = mach_absolute_time()
+    f()
+    return Double(mach_absolute_time() - started) / 1e6
+}
+if C_ARGC > 1 {
+    let a = Array(0..Int(1e3))
+    let ia = ImmutableArray(a)
+    println("a.copy()\t\(a.count) times: " + timeit {
+        for _ in 0..a.count { let v = a.copy() }
+    }.description + "ms")
+    println("a.immutable()\t\(a.count) times: " + timeit {
+        for _ in 0..a.count { let v = a.immutable() }
+    }.description + "ms")
+    println("iterate a\t\(a.count) times: " + timeit {
+        for _ in 0..a.count { var l = 0; for v in a { l = v } }
+    }.description + "ms")
+    println("iterate ia\t\(ia.count) times: " + timeit {
+        for _ in 0..ia.count { var l = 0; for v in ia { l = v } }
+    }.description + "ms")
+    println("access a[i]\t\(a.count) times: " + timeit {
+        for _ in 0..a.count {
+            var l = 0; for i in 0..a.count { l = a[i] }
+        }
+    }.description + "ms")
+    println("access ia[i]\t\(ia.count) times: " + timeit {
+        for _ in 0..ia.count {
+            var l = 0; for i in 0..ia.count { l = ia[i] }
+        }
+    }.description + "ms")
+
+}
