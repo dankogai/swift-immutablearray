@@ -11,7 +11,6 @@ class ImmutableArray<T> {
     let vault:()->T[]
     let count:Int
     init() { vault = {[]}; count = 0 }
-    
     init(_ array:T[]) {
         let copy = array.copy()
         vault = {copy}
@@ -21,26 +20,24 @@ class ImmutableArray<T> {
         vault = {elements}
         count = elements.count
     }
+}
+extension ImmutableArray: Collection {
+    var startIndex:Int { return vault().startIndex }
+    var endIndex:Int { return vault().endIndex }
     subscript (index:Int) -> T {
         return vault()[index]
     }
     subscript (range:Range<Int>) -> ImmutableArray<T> {
-       return ImmutableArray(Array(vault()[range]))
+        return ImmutableArray(Array(vault()[range]))
     }
-    var startIndex:Int { return vault().startIndex }
-    var endIndex:Int { return vault().endIndex }
-}
-extension ImmutableArray : Sequence {
     func generate() -> IndexingGenerator<Array<T>> {
         return vault().generate()
     }
 }
-extension ImmutableArray : Printable {
+extension ImmutableArray : Printable, DebugPrintable {
     var description:String {
         return vault().description
     }
-}
-extension ImmutableArray : DebugPrintable {
     var debugDescription:String {
         return vault().debugDescription
     }
