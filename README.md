@@ -3,8 +3,38 @@ swift-immutablearray
 
 A really immutable array for Swift
 
-Immutable array with mutable elements?
-----
+Synopsis
+--------
+Make an immutable array as intuitively as the following:
+
+````swift
+let ia = ImmutableArray(0,1,2,3)
+````
+
+`ImmutableArray([0,1,2,3])` also works but this is more efficient since you don't have to `copy()` the source array
+
+
+And the following raises the compilation error:
+
+````swift
+ia[0] = -1   // Could not find an overload for 'subscript' that accepts the supplied arguments
+````
+
+Most immutable Array methods and operators are supported:
+
+````swift
+// all true
+ia == [0,1,2,3] // you can compare against ordinary arrays
+ia.map{ $0 * $0 } == ImmutableArray(0,1,4,9)
+ia.filter{ $0 % 2 == 0 } == ImmutableArray(0,2)
+ia.reduce(0){ $0 + $1 } == 6)
+ia.reverse() == ImmutableArray(3,2,1,0)
+````
+
+How it works
+------------
+
+### Immutable array with mutable elements?
 
 This is probably the most notorious feature of Swift.
 
@@ -19,8 +49,7 @@ Though this behavior is well-documented in [The Swift Programming Language],  yo
 
 [The Swift Programming Language]: https://itun.es/gb/jEUH0.l
 
-Swifty Workaround
------------------
+### Swifty Workaround
 
 The easiest workaround is to make use of one of the best features of Swift -- Every block is a closure.
 
