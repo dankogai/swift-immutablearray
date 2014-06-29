@@ -11,11 +11,13 @@ class ImmutableArray<T> {
     let vault:()->T[]
     let count:Int
     init (_ array:T[]) {
-        vault = {array}
+        let copy = array.copy()
+        vault = {copy}
         count = array.count
     }
-    convenience init(_ elements:T...) {
-        self.init(elements)
+    init(_ elements:T...) {
+        vault = {elements}
+        count = elements.count
     }
     subscript (index:Int) -> T {
         return vault()[index]
@@ -84,5 +86,8 @@ extension ImmutableArray {
     }
     func reduce<U>(start:U, block:(U,T)->U) -> U {
         return vault().reduce(start,block)
+    }
+    func reverse() -> ImmutableArray<T> {
+        return ImmutableArray(vault().reverse())
     }
 }
