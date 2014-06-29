@@ -11,8 +11,12 @@ Make an immutable array as intuitively as the following:
 let ia = ImmutableArray(0,1,2,3)
 ````
 
-`ImmutableArray([0,1,2,3])` also works but this is more efficient since you don't have to `copy()` the source array
+The following also work but the above is more efficient since you don't have to `copy()` the source array:
 
+````swift
+let ia1 = ImmutableArray([0,1,2,3])
+let ia2 = [0,1,2,3].immutable()
+````
 
 And the following raises the compilation error:
 
