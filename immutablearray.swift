@@ -10,7 +10,9 @@ class ImmutableArray<T> {
     typealias Element = T
     let vault:()->T[]
     let count:Int
-    init (_ array:T[]) {
+    init() { vault = {[]}; count = 0 }
+    
+    init(_ array:T[]) {
         let copy = array.copy()
         vault = {copy}
         count = array.count
@@ -25,6 +27,8 @@ class ImmutableArray<T> {
     subscript (range:Range<Int>) -> ImmutableArray<T> {
        return ImmutableArray(Array(vault()[range]))
     }
+    var startIndex:Int { return vault().startIndex }
+    var endIndex:Int { return vault().endIndex }
 }
 extension ImmutableArray : Sequence {
     func generate() -> IndexingGenerator<Array<T>> {
@@ -89,5 +93,10 @@ extension ImmutableArray {
     }
     func reverse() -> ImmutableArray<T> {
         return ImmutableArray(vault().reverse())
+    }
+}
+extension Array {
+    func immutable() -> ImmutableArray<T> {
+        return ImmutableArray(self)
     }
 }

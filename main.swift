@@ -9,6 +9,8 @@
 let a  = [0,1,2,3]
 let ia = ImmutableArray(a)
 assert(!ia.isEmpty)
+assert(ia.startIndex == a.startIndex)
+assert(ia.endIndex == a.endIndex)
 assert(ia.count == 4)
 for i in 0..ia.count {
     assert(ia[i] == i)
@@ -19,6 +21,7 @@ for (i, v) in enumerate(ia) {
 a[3] += 1
 assert(a  == [0,1,2,4])
 assert(ia == [0,1,2,3])
+assert([0,1,2,3].immutable() == [0,1,2,3])
 assert(ia != [0,1,2,4])
 assert(ia == ImmutableArray(0,1,2,3))
 assert(ia.map{ $0 * $0 } == [0,1,4,9])
