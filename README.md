@@ -3,6 +3,11 @@ swift-immutablearray
 
 A really immutable array for Swift
 
+Obsoleted by Xcode6-beta3
+-------------------------
+
+As of Xcode6-bata3, `let ia = [...]` gives a truly immutabe array so there is no longer a need for a hack like this.
+
 Synopsis
 --------
 Make an immutable array as intuitively as the following:
